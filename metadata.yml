@@ -1,0 +1,3 @@
+name: "grub"
+version: "2019.1"
+source: "https://github.com/mgomersbach/grub-formula"

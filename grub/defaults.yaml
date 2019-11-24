@@ -1,0 +1,3 @@
+grub:
+  pkg: sys-boot/grub
+  configfile: '/etc/default/grub'

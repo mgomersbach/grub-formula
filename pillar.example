@@ -1,0 +1,25 @@
+grub:
+  config:
+    default:
+      default:
+        grub_distributor:
+          set: "Gentoo"
+        grub_timeout:
+          set: 0
+        grub_cmdline_linux_default:
+          set:
+            - panic=5
+            - oops=panic
+        grub_gfxpayload_linux:
+          set:
+            - keep
+      
+      quietboot:
+        grub_cmdline_linux_default:
+          present:
+            - quiet
+            - console=tty1
+
+      remove-workaround:
+        grub_cmdline_linux:
+          absent: "nvme_core.default_ps_max_latency_us=5500"
