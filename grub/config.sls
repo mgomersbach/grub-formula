@@ -2,13 +2,13 @@
 
 {% for feature, varnames in salt['pillar.get']('grub:config:default', {}).items() %}
   {%- for varname, verbs in varnames.items() %}
-uncomment-{{ varname.upper() }}:
+uncomment-{{ feature }}-{{ varname.upper() }}-{{ verbs.values().__iter__().__next__() }}:
   file.uncomment:
     - name: {{ grub.configfile }}
     - regex: {{ varname.upper() }}=
 
-    {%- for verb, values in verbs.items() %}
-      {%- if values | is_list %}
+    {% for verb, values in verbs.items() %}
+      {% if values | is_list %}
         {%- for value in values %}
 grub-default-config-{{ feature }}-{{ varname.upper() }}-{{ verb }}-{{ value }}:
   augeas.change:
@@ -26,6 +26,7 @@ grub-default-config-{{ feature }}-{{ varname.upper() }}-{{ verb }}-{{ value }}:
         {%- if verb == "set" %}
       - set {{ varname.upper() }} {{ value | join(" ") }}
         {% endif %}
+
       {% else %}
 grub-default-config-{{ feature }}-{{ varname.upper() }}-{{ verb }}-{{ values }}:
   augeas.change:
@@ -44,4 +45,5 @@ grub-default-config-{{ feature }}-{{ varname.upper() }}-{{ verb }}-{{ values }}:
       {%- endif %}
     {%- endfor %}
   {%- endfor %}
+
 {%- endfor %}
