@@ -2,7 +2,7 @@
 
 {% for feature, varnames in salt['pillar.get']('grub:config:default', {}).items() %}
   {%- for varname, verbs in varnames.items() %}
-uncomment-{{ feature }}-{{ varname.upper() }}-for-{{ next(verbs.values()) }}:
+uncomment-{{ feature }}-{{ varname.upper() }}-for-{{ verbs.values().nextitem }}:
   file.uncomment:
     - name: {{ grub.configfile }}
     - regex: {{ varname.upper() }}=
